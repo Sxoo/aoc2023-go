@@ -52,13 +52,7 @@ func main() {
 	fmt.Println("Output:", ans)
 }
 
-func part1(input string) int {
-	var sum int
-
-	parsed := parseInput(input)
-	fmt.Println(parsed)
-
-	for _, str := range parsed {
+func findLineSum(str string) (sum int) {
 		var first rune
 		var last rune
 		var haveFirst bool
@@ -76,11 +70,20 @@ func part1(input string) int {
 				}
 			}
 		}
-		fmt.Printf("first: %c, last: %c\n", first, last)
-		str := string(first) + string(last)
 
-		sum = sum + stringToInt(str)
+		return stringToInt(string(first) + string(last))
+}
+
+func part1(input string) int {
+	var sum int
+
+	parsed := parseInput(input)
+	fmt.Println(parsed)
+
+	for _, str := range parsed {
+		sum = sum + findLineSum(str)
 	}
+
 	return sum
 }
 
@@ -116,37 +119,14 @@ func convertNumberWords(input string) string {
 	return converted
 }
 
-
-
 func part2(input string) int {
 	var sum int
 
 	parsed := parseInput(input)
 
 	for _, str := range parsed {
-		var first rune
-		var last rune
-		var haveFirst = false
-
 		convertedText := convertNumberWords(str)
-		fmt.Printf("original text: %s\n convertedText: %s\n",str, convertedText)
-
-		for _, char := range convertedText {
-			if unicode.IsDigit(char) {
-				if haveFirst {
-					last = char
-				}
-			
-				if !haveFirst {
-					haveFirst = true
-					first = char
-					last = char
-				}
-			}
-		}
-	
-		str := string(first) + string(last)
-		sum = sum + stringToInt(str)
+		sum = sum + findLineSum(convertedText)
 	}
 
 	return sum
