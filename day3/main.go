@@ -91,6 +91,10 @@ func part1(input string) int {
 	return sum
 }
 
+func formatKey (row int, col int) string {
+	return strconv.Itoa(row) + "!" + fmt.Sprint(col)
+}
+
 func part2(input string) int {
 	symbolMap, numberMap := parseInputPart2(input)
 	var sum int
@@ -108,38 +112,21 @@ func part2(input string) int {
 		leftColIndex := colAsInt - 1
 		rightColIndex := colAsInt + 1
 
+		possibleIndexes := []string{
+			formatKey(topRowIndex, colAsInt), 
+			formatKey(bottomRowIndex, colAsInt), 
+			formatKey(rowAsInt, leftColIndex), 
+			formatKey(rowAsInt, rightColIndex), 
+			formatKey(topRowIndex, rightColIndex), 
+			formatKey(topRowIndex, leftColIndex), 
+			formatKey(bottomRowIndex, rightColIndex), 
+			formatKey(bottomRowIndex, leftColIndex)}
 
-		val1, exists1 := numberMap[strconv.Itoa(topRowIndex)+"!"+fmt.Sprint(colAsInt)]
-		if exists1 {
-			results = append(results, val1)
-		}
-		val2, exists2 := numberMap[strconv.Itoa(bottomRowIndex)+"!"+fmt.Sprint(colAsInt)] 
-		if exists2 {
-			results = append(results, val2)
-		}
-		val3, exists3 := numberMap[strconv.Itoa(rowAsInt)+"!"+fmt.Sprint(leftColIndex)]
-		if exists3 {
-			results = append(results, val3)
-		}
-		val4, exists4 := numberMap[strconv.Itoa(rowAsInt)+"!"+fmt.Sprint(rightColIndex)]
-		if exists4 {
-			results = append(results, val4)
-		}
-		val5, exists5 := numberMap[strconv.Itoa(topRowIndex)+"!"+fmt.Sprint(rightColIndex)] 
-		if exists5 {
-			results = append(results, val5)
-		}
-		val6, exists6 := numberMap[strconv.Itoa(topRowIndex)+"!"+fmt.Sprint(leftColIndex)]
-		if exists6 {
-			results = append(results, val6)
-		}
-		val7, exists7 := numberMap[strconv.Itoa(bottomRowIndex)+"!"+fmt.Sprint(rightColIndex)]
-		if exists7 {
-			results = append(results, val7)
-		}
-		val8, exists8 := numberMap[strconv.Itoa(bottomRowIndex)+"!"+fmt.Sprint(leftColIndex)]
-		if exists8{
-			results = append(results, val8)
+		for _, index := range possibleIndexes {
+			val, exists := numberMap[index]
+			if exists {
+				results = append(results, val)
+			}
 		}
 
 		// watch me whip... watch me nae nae...
